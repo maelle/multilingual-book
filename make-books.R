@@ -143,9 +143,9 @@ modify_one <- function(filename, all_map, dic) {
 
   # Now, perform HTML surgery to add a link to that HTML.
   html <- xml2::read_html(filename)
-  source <- xml2::xml_find_first(html, ".//li/a[@id='book-source']")
 
   # Side-fix, index.Rmd is index-content.Rmd.pre & in the language folder
+  source <- xml2::xml_find_first(html, ".//li/a[@id='book-source']")
   source_href <- xml2::xml_attr(source, "href")
   if (basename(source_href) == "index.Rmd") {
     dir_name <- if (is_english) {"chapters-en"} else {"chapters-fr"}
@@ -155,9 +155,11 @@ modify_one <- function(filename, all_map, dic) {
     )
   }
 
+  # add link on the left so that it is visible on mobile
+  repo <- xml2::xml_find_first(html, ".//p/a[@id='book-repo']")
   xml2::xml_add_sibling(
-    xml2::xml_parent(source),
-    "li",
+    xml2::xml_parent(repo),
+    "p",
     .where = "before"
   )
 
@@ -174,7 +176,7 @@ modify_one <- function(filename, all_map, dic) {
   }
 
   xml2::xml_add_child(
-    xml2::xml_siblings(xml2::xml_parent(source))[[1]],
+    xml2::xml_siblings(xml2::xml_parent(repo))[[1]],
     "a", href = sprintf("../%s/%s", new_dir, basename(new_name)), other_language
   )
 
