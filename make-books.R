@@ -16,7 +16,7 @@ common_index <- list(
 
 # Common _output.yml configuration
 common_config <- list(
-  new_session = FALSE,
+  new_session = FALSE, # TRUE does not seem compatible with content in subfolders
   before_chapter_script = "_common.R",
   delete_merged_file = TRUE
 )
