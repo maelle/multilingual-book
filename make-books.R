@@ -103,6 +103,7 @@ english_map <- purrr::map_df(english_html, map_source, lang = "en")
 french_map <- purrr::map_df(french_html, map_source, lang = "fr")
 all_map <- rbind(english_map, french_map)
 all_map$rmd[all_map$rmd == "#"] <- "index.Rmd"
+all_map <- all_map[!is.na(all_map$rmd),]
 
 modify_one <- function(filename, all_map, dic) {
   english <- names(dic)
@@ -112,13 +113,15 @@ modify_one <- function(filename, all_map, dic) {
   if (basename(filename) == "404.html") {
     return()
   }
-
+ #if(grepl("bloc", filename)) browser()
   rmd_filename <- all_map$rmd[all_map$html == filename]
-  new_name <- if (is_english) {
+  new_rmd <- if (is_english) {
     french[english == fs::path_ext_remove(rmd_filename)]
   } else {
     english[french == fs::path_ext_remove(rmd_filename)]
   }
+
+  new_name <- all_map$html[fs::path_ext_remove(all_map$rmd) == new_rmd]
 
   html <- xml2::read_html(filename)
   source <- xml2::xml_find_first(html, ".//li/a[@id='book-source']")
@@ -135,7 +138,7 @@ modify_one <- function(filename, all_map, dic) {
 
   xml2::xml_add_child(
     xml2::xml_siblings(xml2::xml_parent(source))[[1]],
-    "a", href = sprintf("../%s/%s.html", new_dir, new_name), "Other language"
+    "a", href = sprintf("../%s/%s", new_dir, basename(new_name)), "Other language"
   )
 
   xml2::write_html(html, filename)
