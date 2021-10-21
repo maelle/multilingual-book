@@ -3,4 +3,6 @@ bookdown::bs4_book:
   css: style.css
   theme:
     primary: "#096B72"
-  repo: https://github.com/maelle/multilingual-book
+  repo:
+    base: https://github.com/maelle/multilingual-book
+    branch: main

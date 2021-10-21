@@ -1,6 +1,8 @@
+# Folder, file names etc.
 english_name <- "english"
 french_name <- "french"
 
+# Common configuration for "index.Rmd"
 common_index <- list(
   date = as.character(Sys.Date()),
   site = "bookdown::bookdown_site",
@@ -11,6 +13,7 @@ common_index <- list(
   csl = "chicago-fullnote-bibliography.csl"
 )
 
+# Common _output.yml configuration
 common_config <- list(
   new_session = FALSE,
   before_chapter_script = "_common.R",
@@ -83,8 +86,12 @@ fs::dir_copy(french_name, "docs")
 fs::dir_delete(french_name)
 
 # Surgery
+
+# Correspondance between English and French Rmd filenames
 dic <- yaml::read_yaml("dic.yaml")
 
+# We need the correspondance between Rmd and HTML filenames.
+# We get it thanks to bs4_book storing the source filename!
 map_source <- function(filename, lang) {
   html <- xml2::read_html(filename)
   source <- xml2::xml_find_first(html, ".//li/a[@id='book-source']")
