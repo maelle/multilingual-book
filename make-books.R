@@ -146,7 +146,8 @@ modify_one <- function(filename, all_map, dic) {
   source <- xml2::xml_find_first(html, ".//li/a[@id='book-source']")
   xml2::xml_add_sibling(
     xml2::xml_parent(source),
-    "li"
+    "li",
+    .where = "before"
   )
 
   new_dir <- if(is_english) {
