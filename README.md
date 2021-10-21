@@ -1,13 +1,6 @@
-Welcome! 
+# Multilingual bs4_book
 
-This is a minimal example of a book based on R Markdown and **bookdown** (https://github.com/rstudio/bookdown). 
-
-This template provides a skeleton file structure that you can edit to create your book. 
-
-The contents inside the .Rmd files provide some pointers to help you get started, but feel free to also delete the content in each file and start fresh.
-
-Additional resources:
-
-The **bookdown** book: https://bookdown.org/yihui/bookdown/
-
-The **bookdown** package reference site: https://pkgs.rstudio.com/bookdown
+* Chapters are in two folders by language.
+* The content of index.Rmd is in each language folder, without any frontmatter, as index.Rmd.pre.
+* The mapping between English and French filenames is in dic.yaml.
+* The script `make-books.R` builds the books, copy their content to the docs folder, then perform xml2 surgery to get the mapping between Rmd and HTML filenames, and to add a link to each HTML to the HTML in the other language.
