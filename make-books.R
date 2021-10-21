@@ -100,7 +100,7 @@ english_html <- fs::dir_ls(file.path("docs", english_name), glob = "*.html")
 french_html <- fs::dir_ls(file.path("docs", french_name), glob = "*.html")
 
 english_map <- purrr::map_df(english_html, map_source, lang = "en")
-french_map <- purrr::map_df(english_html, map_source, lang = "fr")
+french_map <- purrr::map_df(french_html, map_source, lang = "fr")
 all_map <- rbind(english_map, french_map)
 all_map$rmd[all_map$rmd == "#"] <- "index.Rmd"
 
