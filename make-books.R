@@ -149,9 +149,15 @@ modify_one <- function(filename, all_map, dic) {
     english_name
   }
 
+  other_language <- if (is_english) {
+    "Version française 👋"
+  } else {
+    "English version 👋"
+  }
+
   xml2::xml_add_child(
     xml2::xml_siblings(xml2::xml_parent(source))[[1]],
-    "a", href = sprintf("../%s/%s", new_dir, basename(new_name)), "Other language"
+    "a", href = sprintf("../%s/%s", new_dir, basename(new_name)), other_language
   )
 
   xml2::write_html(html, filename)
