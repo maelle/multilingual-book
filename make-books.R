@@ -144,6 +144,13 @@ modify_one <- function(filename, all_map, dic) {
   # Now, perform HTML surgery to add a link to that HTML.
   html <- xml2::read_html(filename)
   source <- xml2::xml_find_first(html, ".//li/a[@id='book-source']")
+
+  # Side-fix, index.Rmd is index.Rmd.pre
+  source_href <- xml2::xml_attr(source, "href")
+  if (basename(source_href) == "index.Rmd") {
+    xml2::xml_attr(source, "href") <- paste0(source_href, ".pre")
+  }
+
   xml2::xml_add_sibling(
     xml2::xml_parent(source),
     "li",
