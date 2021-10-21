@@ -1,0 +1,13 @@
+eq:binom
+à-propos
+salut-bookdown
+une-section
+cross
+chapitres-et-sous-chapitres
+parties
+footnotes-and-citations
+footnotes
+citations
+blocs
+équations
+partager-votre-livre
