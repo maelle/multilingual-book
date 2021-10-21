@@ -1,5 +1,8 @@
 # Multilingual bs4_book
 
+[![Project Status: Concept – Minimal or no implementation has been done yet, or the repository is only intended to be a limited example, demo, or proof-of-concept.](https://www.repostatus.org/badges/latest/concept.svg)](https://www.repostatus.org/#concept)
+
+
 * Chapters are in two folders by language.
 * The content of index.Rmd is in each language folder, without any frontmatter, as index.Rmd.pre.
 * The mapping between English and French filenames is in dic.yaml.
