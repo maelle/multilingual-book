@@ -110,10 +110,16 @@ modify_one <- function(filename, all_map, dic) {
   french <- dic
   is_english <- grepl("docs/english", filename)
 
+  if (is_english) {
+    all_map <- all_map[all_map$lang == "en"]
+  } else {
+    all_map <- all_map[all_map$lang == "fr"]
+  }
+
   if (basename(filename) == "404.html") {
     return()
   }
- #if(grepl("bloc", filename)) browser()
+
   rmd_filename <- all_map$rmd[all_map$html == filename]
   new_rmd <- if (is_english) {
     french[english == fs::path_ext_remove(rmd_filename)]
