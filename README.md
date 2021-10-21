@@ -4,7 +4,7 @@
 
 
 * Chapters are in two folders, one folder by language. They hold the same number of chapters!
-* The content of index.Rmd is in each language folder, without any frontmatter, as `index.Rmd.pre`.
+* The content of index.Rmd is in each language folder, without any frontmatter, as `index-content.Rmd.pre`.
 * The mapping between English and French filenames is in [`dic.yaml`](dic.yaml). YAML seemed natural, but it could be included in another YAML config file. 
 * The script [`make-books.R`](make-books.R)
     * builds the books after merging the general and language specific configurations, 

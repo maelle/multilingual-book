@@ -145,13 +145,13 @@ modify_one <- function(filename, all_map, dic) {
   html <- xml2::read_html(filename)
   source <- xml2::xml_find_first(html, ".//li/a[@id='book-source']")
 
-  # Side-fix, index.Rmd is index.Rmd.pre & in the language folder
+  # Side-fix, index.Rmd is index-content.Rmd.pre & in the language folder
   source_href <- xml2::xml_attr(source, "href")
   if (basename(source_href) == "index.Rmd") {
     dir_name <- if (is_english) {"chapters-en"} else {"chapters-fr"}
     xml2::xml_attr(source, "href") <- paste0(
       dirname(source_href),
-      sprintf("/%s/index.Rmd.pre", dir_name)
+      sprintf("/%s/index-content.Rmd.pre", dir_name)
     )
   }
 
