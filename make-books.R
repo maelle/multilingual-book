@@ -1,3 +1,4 @@
+# General configuration ----------------------
 # Folder, file names etc.
 english_name <- "english"
 french_name <- "french"
@@ -20,7 +21,7 @@ common_config <- list(
   delete_merged_file = TRUE
 )
 
-# Build English book
+# Build English book ----------------------
 english_specific_index <- list(
   title = "Book Example",
   description = "Minimal example, blablabla"
@@ -49,7 +50,7 @@ bookdown::render_book(config_file = english_config_file)
 fs::file_delete(english_index_file)
 
 
-# Build French book
+# Build French book ----------------------
 french_specific_index <- list(
   title = "Exemple de livre",
   description = "Exemple minimal, blablabla"
@@ -77,7 +78,7 @@ yaml::write_yaml(french_config, french_config_file)
 bookdown::render_book(config_file = french_config_file)
 fs::file_delete(french_index_file)
 
-# Copy
+# Copy content of books to docs folder ----------------------
 if (fs::dir_exists("docs")) fs::dir_delete("docs")
 fs::dir_create("docs")
 fs::dir_copy(english_name, "docs")
@@ -85,13 +86,14 @@ fs::dir_delete(english_name)
 fs::dir_copy(french_name, "docs")
 fs::dir_delete(french_name)
 
-# Surgery
+# Surgery ----------------------
 
-# Correspondance between English and French Rmd filenames
+# Mapping between English and French Rmd filenames
 dic <- yaml::read_yaml("dic.yaml")
 
-# We need the correspondance between Rmd and HTML filenames.
+# We need the mapping between Rmd and HTML filenames.
 # We get it thanks to bs4_book storing the source filename!
+# (only when there is a repo)
 map_source <- function(filename, lang) {
   html <- xml2::read_html(filename)
   source <- xml2::xml_find_first(html, ".//li/a[@id='book-source']")
@@ -115,7 +117,7 @@ all_map <- all_map[!is.na(all_map$rmd),]
 modify_one <- function(filename, all_map, dic) {
   english <- names(dic)
   french <- dic
-  is_english <- grepl("docs/english", filename)
+  is_english <- grepl(sprintf("docs/%s", english_name), filename)
 
   lang <- if (is_english) {
     "en"
@@ -123,19 +125,23 @@ modify_one <- function(filename, all_map, dic) {
     "fr"
   }
 
+  # The 404.html page has no right sidebar
   if (basename(filename) == "404.html") {
     return()
   }
 
+  # Find Rmd filename corresponding to current HTML filename
   rmd_filename <- all_map$rmd[all_map$html == filename & all_map$lang == lang]
+  # Rmd in the other language
   new_rmd <- if (is_english) {
     french[english == fs::path_ext_remove(rmd_filename)]
   } else {
     english[french == fs::path_ext_remove(rmd_filename)]
   }
-
+  # And now, from that Rmd to the corresponding HTML filename!
   new_name <- all_map$html[fs::path_ext_remove(all_map$rmd) == new_rmd & all_map$lang != lang]
 
+  # Now, perform HTML surgery to add a link to that HTML.
   html <- xml2::read_html(filename)
   source <- xml2::xml_find_first(html, ".//li/a[@id='book-source']")
   xml2::xml_add_sibling(
@@ -160,6 +166,7 @@ modify_one <- function(filename, all_map, dic) {
     "a", href = sprintf("../%s/%s", new_dir, basename(new_name)), other_language
   )
 
+  # Voilà
   xml2::write_html(html, filename)
 }
 
