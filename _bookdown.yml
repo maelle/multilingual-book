@@ -1,0 +1,8 @@
+new_session: no
+before_chapter_script: _common.R
+delete_merged_file: yes
+book_filename: livre-multilangues
+language:
+  ui:
+    chapter_name: 'Chapitre '
+output_dir: _livre
