@@ -110,24 +110,24 @@ modify_one <- function(filename, all_map, dic) {
   french <- dic
   is_english <- grepl("docs/english", filename)
 
-  if (is_english) {
-    all_map <- all_map[all_map$lang == "en"]
+  lang <- if (is_english) {
+    "en"
   } else {
-    all_map <- all_map[all_map$lang == "fr"]
+    "fr"
   }
 
   if (basename(filename) == "404.html") {
     return()
   }
 
-  rmd_filename <- all_map$rmd[all_map$html == filename]
+  rmd_filename <- all_map$rmd[all_map$html == filename & all_map$lang == lang]
   new_rmd <- if (is_english) {
     french[english == fs::path_ext_remove(rmd_filename)]
   } else {
     english[french == fs::path_ext_remove(rmd_filename)]
   }
 
-  new_name <- all_map$html[fs::path_ext_remove(all_map$rmd) == new_rmd]
+  new_name <- all_map$html[fs::path_ext_remove(all_map$rmd) == new_rmd & all_map$lang != lang]
 
   html <- xml2::read_html(filename)
   source <- xml2::xml_find_first(html, ".//li/a[@id='book-source']")
