@@ -13,3 +13,5 @@
 
 This is a **prototype**.
 For instance it'd be good to have more generic code, with not only two languages.
+
+Instead of having to merge configuration in the R code it'd be nice to merge configuration like with Hugo (including, for frontmatter, something like [cascades](https://gohugo.io/news/0.86.0-relnotes/)).
