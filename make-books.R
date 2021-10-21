@@ -135,7 +135,7 @@ modify_one <- function(filename, all_map, dic) {
 
   xml2::xml_add_child(
     xml2::xml_siblings(xml2::xml_parent(source))[[1]],
-    "a", href = sprintf("/%s/%s.html", new_dir, new_name), "Other language"
+    "a", href = sprintf("../%s/%s.html", new_dir, new_name), "Other language"
   )
 
   xml2::write_html(html, filename)
